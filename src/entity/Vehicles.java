@@ -1,16 +1,16 @@
 package entity;
 
 public class Vehicles {
-	private Integer carId;
+	private int carId;
 	private String carMake;
 	private String carModel;
 	private String carColor;
 	
 	
-	public Integer getCarId() {
+	public int getCarId() {
 		return carId;
 	}
-	public void setCarId(Integer id) {
+	public void setCarId(int id) {
 		this.carId = id;
 	}
 	public String getCarMake() {
@@ -33,7 +33,7 @@ public class Vehicles {
 	}
 	
 	public String toString() {
-		return "id=" + carId + ", make=" + carMake + ", "
-				+ "model=" + carModel + ", color=" + carColor;
+		return "id= " + carId + ", make= " + carMake + ", "
+				+ "model= " + carModel + ", color= " + carColor;
 	}		
 }		

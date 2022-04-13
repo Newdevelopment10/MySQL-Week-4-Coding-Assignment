@@ -15,13 +15,14 @@ public class VehiclesDao {
   
 	public void addVehicle(Vehicles vehicle) {
 		String sql = ""
-			+ "INSERT INTO " + VEHICLES_TABLE + " (car_make) VALUES (?)"
-			+ "(car_model) VALUES (?)" + "(car_color) VALUES (?)";
-			
+			+ "INSERT INTO " + VEHICLES_TABLE + " (car_make, car_model, car_color) "
+					+ " VALUES (?, ?, ?)";
 		
 		try(Connection conn = DbConnection.getConnection()) {
 		  try(PreparedStatement statement = conn.prepareStatement(sql)) {
 			statement.setString(1, vehicle.getCarMake());
+			statement.setString(2, vehicle.getCarModel());
+			statement.setString(3, vehicle.getCarColor());
 			
 			statement.executeUpdate();
 		  }
@@ -31,8 +32,7 @@ public class VehiclesDao {
 	}
 
 	public List<Vehicles> retrieveAllVehicles() {
-	  String sql = "SELECT * FROM" + VEHICLES_TABLE + "ORDER BY car_make"; 
-			  
+	  String sql = "SELECT * FROM " + VEHICLES_TABLE + " ORDER BY car_id";  
 	  try(Connection conn = DbConnection.getConnection()) {
 		 try(PreparedStatement statement = conn.prepareStatement(sql)) {
 			try(ResultSet rs = statement.executeQuery()) {
@@ -40,30 +40,31 @@ public class VehiclesDao {
 				
 				while(rs.next()) {
 				  Vehicles vehicle = new Vehicles();
-				  vehicle.setCarId(rs.getObject("id", Integer.class));
-				  vehicle.setCarMake(rs.getString("make"));
-				  vehicle.setCarModel(rs.getString("model"));
-				  vehicle.setCarColor(rs.getString("color"));
+				  vehicle.setCarId(rs.getInt("car_id"));
+				  vehicle.setCarMake(rs.getString("car_make"));
+				  vehicle.setCarModel(rs.getString("car_model"));
+				  vehicle.setCarColor(rs.getString("car_color"));
 				  
 				  vehicles.add(vehicle);
 				}
 				return vehicles;
 			}
-				  }
+		 }
 				} catch (SQLException e) {
 					throw new RuntimeException(e);
 				}
 	}
 
 	public void changeVehicle(Vehicles vehicle) {
-		String sql = "UPDATE " + VEHICLES_TABLE + " SET car_make = ? WHERE car_id = ?";
+		String sql = "UPDATE " + VEHICLES_TABLE + " SET car_make = ?, car_model = ?, car_color = ?"
+				+ " WHERE car_id = ?";
 		
 		try(Connection conn = DbConnection.getConnection()) {
 			try(PreparedStatement statement = conn.prepareStatement(sql)) {
-				statement.setInt(1, vehicle.getCarId());
-				statement.setString(2, vehicle.getCarMake());
-				statement.setString(3, vehicle.getCarModel());
-				statement.setString(4, vehicle.getCarColor());
+				statement.setString(1, vehicle.getCarMake());
+				statement.setString(2, vehicle.getCarModel());
+				statement.setString(3, vehicle.getCarColor());
+				statement.setInt(4, vehicle.getCarId());
 				
 				statement.executeUpdate();
 	}
@@ -73,7 +74,7 @@ public class VehiclesDao {
 		}
 
 	public boolean removeVehicle(Integer carId) {
-		String sql = "DELETE FROM " + VEHICLES_TABLE + "WHERE car_id = ?";
+		String sql = "DELETE FROM " + VEHICLES_TABLE + " WHERE car_id = ?";
 		
 		try(Connection conn = DbConnection.getConnection()) {
 			try(PreparedStatement statement = conn.prepareStatement(sql)) {

@@ -11,10 +11,11 @@ public class MainMenu {
 
 	// formatter:off
 	private List<String> ops = List.of(
-			"1. Add car to vehicles table", 
-			"2. List the cars",
-			"3. Change car in vehicles table", 
-			"4. Delete car in vehicles table"
+			"-1. Exit menu",
+			" 1. Add car to vehicles table", 
+			" 2. List the cars",
+			" 3. Change car in vehicles table", 
+			" 4. Delete car in vehicles table"
 	);
 	// formatter:on
 
@@ -76,12 +77,14 @@ public class MainMenu {
 	}
 	private void changeVehicle() {
 		listVehicles();
-
+		
+		int carId = getIntSelection("Enter car id to update");
 		String carMake = getStringSelection("Enter the car make");
 		String carModel = getStringSelection("Enter the car model");
 		String carColor = getStringSelection("Enter the car color");
 
 		Vehicles vehicle = new Vehicles();
+		vehicle.setCarId(carId);
 		vehicle.setCarMake(carMake);
 		vehicle.setCarModel(carModel);
 		vehicle.setCarColor(carColor);
